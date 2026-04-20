@@ -1,0 +1,34 @@
+===========================================
+MIRO FREITAS — Site estático (HTML puro)
+===========================================
+
+ESTRUTURA:
+  /hostinger
+    index.html         → Página inicial
+    produtos.html
+    empresas.html
+    sobre.html
+    contato.html
+    /css/styles.css    → Estilos
+    /js/app.js         → JavaScript (menu mobile, form, filtro)
+    /img/              → Coloque suas imagens aqui
+
+COMO SUBIR NA HOSTINGER:
+
+1) Acesse hPanel → Arquivos → Gerenciador de arquivos
+2) Entre na pasta "public_html"
+3) Selecione TODO o conteúdo desta pasta (hostinger/)
+   e faça upload (pode arrastar ou usar "Carregar arquivos")
+4) Pronto. Acesse seu domínio.
+
+OBS: a "pasta raiz" do site deve ter o index.html direto
+(não coloque tudo dentro de outra pasta — o conteúdo
+de hostinger/ vai direto em public_html/).
+
+FUNCIONALIDADES:
+- Menu hamburger em mobile
+- Formulário de cotação com validação + máscara CNPJ/telefone
+- Filtro de produtos com busca (produtos.html)
+- Banner de cookies
+- Botão WhatsApp flutuante
+- 100% responsivo, sem frameworks, pronto para hospedagem estática
