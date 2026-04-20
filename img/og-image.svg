@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0B1F3A"/>
+      <stop offset="100%" stop-color="#0F2A4A"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="30%" r="50%" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Left accent bar -->
+  <rect x="80" y="200" width="3" height="230" rx="2" fill="#22D3EE" opacity="0.6"/>
+
+  <!-- Eyebrow -->
+  <text x="104" y="224" font-family="'JetBrains Mono', monospace" font-size="14" letter-spacing="3" fill="#22D3EE" opacity="0.9" text-transform="uppercase">REPRESENTAÇÃO COMERCIAL · REFRIGERAÇÃO B2B</text>
+
+  <!-- Logo name -->
+  <text x="101" y="320" font-family="'Space Grotesk', 'Inter', sans-serif" font-weight="700" font-size="88" letter-spacing="-3" fill="white">MIRO</text>
+  <text x="465" y="320" font-family="'Space Grotesk', 'Inter', sans-serif" font-weight="700" font-size="88" letter-spacing="-3" fill="#22D3EE">FREITAS</text>
+
+  <!-- Tagline -->
+  <text x="104" y="372" font-family="'Inter', sans-serif" font-size="24" fill="#B8C4D4">Refrigeração séria, resolvida com gente.</text>
+
+  <!-- Divider -->
+  <line x1="104" y1="408" x2="460" y2="408" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+  <!-- Stats -->
+  <text x="104" y="448" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="32" fill="#22D3EE">15+</text>
+  <text x="104" y="470" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="1.5" fill="#7B8DA6">ANOS NO SETOR</text>
+
+  <text x="230" y="448" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="32" fill="#22D3EE">400+</text>
+  <text x="230" y="470" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="1.5" fill="#7B8DA6">EMPRESAS</text>
+
+  <text x="370" y="448" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="32" fill="#22D3EE">&lt;4h</text>
+  <text x="370" y="470" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="1.5" fill="#7B8DA6">RETORNO MÉDIO</text>
+
+  <!-- Right badge -->
+  <rect x="880" y="230" width="240" height="40" rx="20" fill="rgba(34,211,238,0.12)" stroke="rgba(34,211,238,0.25)" stroke-width="1"/>
+  <text x="1000" y="255" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" letter-spacing="2" fill="#67E8F9">EXCLUSIVO PARA CNPJ</text>
+
+  <!-- Phone -->
+  <text x="1000" y="330" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-weight="600" font-size="28" fill="white">(41) 99648-3352</text>
+  <text x="1000" y="360" text-anchor="middle" font-family="'Inter', sans-serif" font-size="14" fill="#7B8DA6">Curitiba · PR · Brasil</text>
+
+  <!-- Bottom URL -->
+  <text x="104" y="560" font-family="'JetBrains Mono', monospace" font-size="13" fill="#4A6585" letter-spacing="1">miro.freitas@friorio.com.br</text>
+</svg>
