@@ -29,7 +29,8 @@
     }
     const close = (val) => {
       localStorage.setItem("mf_cookie_ok", val);
-      cookie.classList.add("hidden");
+      cookie.classList.add("hiding");
+      setTimeout(() => cookie.classList.add("hidden"), 320);
     };
     const ok = document.getElementById("cookie-accept");
     const no = document.getElementById("cookie-refuse");
