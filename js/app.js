@@ -142,4 +142,40 @@
     });
     if (search) search.addEventListener("input", apply);
   }
+
+  // --- Scroll progress bar ---
+  const _bar = document.createElement("div");
+  _bar.className = "scroll-progress";
+  document.body.prepend(_bar);
+  window.addEventListener("scroll", () => {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    _bar.style.width = total > 0 ? (window.scrollY / total * 100) + "%" : "0%";
+  }, { passive: true });
+
+  // --- Reveal on scroll (IntersectionObserver) ---
+  const _skip = ["header", ".topbar", ".hero-grid", "footer", ".mobile-menu"];
+  const _inSkip = el => _skip.some(s => el.closest(s));
+
+  // Stagger containers: animate children sequentially
+  document.querySelectorAll(".grid-4, .grid-3, .audience-grid").forEach(g => {
+    if (_inSkip(g)) return;
+    g.classList.add("stagger");
+    g.querySelectorAll(":scope > *").forEach(c => c.classList.add("reveal"));
+  });
+
+  // Individual elements on every page
+  [".eyebrow", "h2", ".lead", ".partnership-card", ".cta-block",
+    ".testimonial", ".diff-row", ".step-num", ".hero-portrait-card",
+    ".card-form", ".card-success"]
+    .forEach(sel => document.querySelectorAll(sel).forEach(el => {
+      if (!_inSkip(el) && !el.classList.contains("reveal"))
+        el.classList.add("reveal");
+    }));
+
+  const _obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add("visible"); _obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: "0px 0px -32px 0px" });
+  document.querySelectorAll(".reveal").forEach(el => _obs.observe(el));
 })();

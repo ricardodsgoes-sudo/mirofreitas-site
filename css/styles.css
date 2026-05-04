@@ -528,3 +528,44 @@ h4 { font-size: 15px; letter-spacing: 0; }
   h1 { font-size: 34px; }
   .hero-portrait-card .portrait { aspect-ratio: 1/1; }
 }
+
+/* ============================================================
+   SCROLL ANIMATIONS
+   ============================================================ */
+html { scroll-behavior: smooth; }
+
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--cyan-3), var(--cyan-2));
+  z-index: 9999;
+  border-radius: 0 2px 2px 0;
+  pointer-events: none;
+  will-change: width;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stagger > *:nth-child(1) { transition-delay: 0s; }
+.stagger > *:nth-child(2) { transition-delay: 0.09s; }
+.stagger > *:nth-child(3) { transition-delay: 0.18s; }
+.stagger > *:nth-child(4) { transition-delay: 0.27s; }
+.stagger > *:nth-child(5) { transition-delay: 0.36s; }
+.stagger > *:nth-child(6) { transition-delay: 0.45s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .scroll-progress { display: none; }
+}
