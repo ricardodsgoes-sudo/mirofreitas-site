@@ -1,10 +1,46 @@
 /* ============================================================
    MIRO FREITAS — global JS (vanilla)
+   - Lenis cinematic smooth scroll
    - Active nav link
    - Cookie banner
    - Form validation + masks (only runs if form present)
    ============================================================ */
 (function () {
+
+  // --- Lenis cinematic scroll ---
+  let lenis;
+  const _reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!_reduced && typeof Lenis !== 'undefined') {
+    lenis = new Lenis({
+      lerp: 0.07,
+      smoothWheel: true,
+      smoothTouch: false,
+      wheelMultiplier: 0.85,
+    });
+
+    (function raf(t) { lenis.raf(t); requestAnimationFrame(raf); })(0);
+  }
+
+  // --- Page enter animation ---
+  if (!_reduced) document.body.classList.add('page-enter');
+
+  // --- Page exit on internal link click ---
+  if (!_reduced) {
+    document.addEventListener('click', e => {
+      const link = e.target.closest('a[href]');
+      if (!link || link.target === '_blank') return;
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || /^https?:/.test(href)) return;
+      const current = location.pathname.split('/').pop() || 'index.html';
+      if (href === current) return;
+      e.preventDefault();
+      if (lenis) lenis.stop();
+      document.body.classList.add('page-exit');
+      setTimeout(() => { window.location.href = href; }, 260);
+    });
+  }
+
   // --- Highlight active nav link based on current filename ---
   const path = location.pathname.split("/").pop() || "index.html";
   document.querySelectorAll("[data-nav]").forEach(a => {
@@ -12,12 +48,58 @@
     if (path === "" && a.getAttribute("href") === "index.html") a.classList.add("active");
   });
 
+  // --- Sliding nav pill ---
+  const _nav = document.querySelector('.nav');
+  if (_nav) {
+    const _pill = document.createElement('span');
+    _pill.className = 'nav-pill';
+    _nav.prepend(_pill);
+
+    const _activeLink = _nav.querySelector('a.active');
+
+    const _movePill = (el, instant) => {
+      const navRect = _nav.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      if (instant) _pill.style.transition = 'none';
+      _pill.style.left = (elRect.left - navRect.left) + 'px';
+      _pill.style.width = elRect.width + 'px';
+      _pill.style.opacity = '1';
+      if (instant) requestAnimationFrame(() => { _pill.style.transition = ''; });
+    };
+
+    if (_activeLink) {
+      _movePill(_activeLink, true);
+    } else {
+      _pill.style.opacity = '0';
+    }
+
+    _nav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('mouseenter', () => _movePill(a, false));
+    });
+    _nav.addEventListener('mouseleave', () => {
+      if (_activeLink) _movePill(_activeLink, false);
+      else _pill.style.opacity = '0';
+    });
+  }
+
   // --- Mobile menu ---
   const menuBtn = document.getElementById("menu-btn");
   const mobileMenu = document.getElementById("mobile-menu");
   const menuClose = document.getElementById("menu-close");
-  const openMenu = () => { if (mobileMenu) { mobileMenu.classList.add("open"); document.body.style.overflow = "hidden"; } };
-  const closeMenu = () => { if (mobileMenu) { mobileMenu.classList.remove("open"); document.body.style.overflow = ""; } };
+  const openMenu = () => {
+    if (mobileMenu) {
+      mobileMenu.classList.add("open");
+      document.body.style.overflow = "hidden";
+      if (lenis) lenis.stop();
+    }
+  };
+  const closeMenu = () => {
+    if (mobileMenu) {
+      mobileMenu.classList.remove("open");
+      document.body.style.overflow = "";
+      if (lenis) lenis.start();
+    }
+  };
   if (menuBtn) menuBtn.addEventListener("click", openMenu);
   if (menuClose) menuClose.addEventListener("click", closeMenu);
 
@@ -97,7 +179,7 @@
             document.getElementById("success-tel").textContent = data.telefone;
             container.style.display = "none";
             success.style.display = "block";
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            if (lenis) lenis.scrollTo(0); else window.scrollTo({ top: 0, behavior: "smooth" });
           }
         })
         .catch(() => {
@@ -147,10 +229,29 @@
   const _bar = document.createElement("div");
   _bar.className = "scroll-progress";
   document.body.prepend(_bar);
-  window.addEventListener("scroll", () => {
-    const total = document.documentElement.scrollHeight - window.innerHeight;
-    _bar.style.width = total > 0 ? (window.scrollY / total * 100) + "%" : "0%";
-  }, { passive: true });
+
+  if (lenis) {
+    lenis.on('scroll', ({ scroll, limit }) => {
+      _bar.style.width = limit > 0 ? (scroll / limit * 100) + '%' : '0%';
+    });
+  } else {
+    window.addEventListener('scroll', () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      _bar.style.width = total > 0 ? (window.scrollY / total * 100) + "%" : "0%";
+    }, { passive: true });
+  }
+
+  // --- Parallax (add data-parallax="-0.08" to any element) ---
+  if (lenis) {
+    const _pEls = document.querySelectorAll('[data-parallax]');
+    if (_pEls.length) {
+      lenis.on('scroll', ({ scroll }) => {
+        _pEls.forEach(el => {
+          el.style.transform = `translateY(${scroll * parseFloat(el.dataset.parallax)}px)`;
+        });
+      });
+    }
+  }
 
   // --- Reveal on scroll (IntersectionObserver) ---
   const _skip = ["header", ".topbar", ".hero-grid", "footer", ".mobile-menu"];
@@ -178,4 +279,5 @@
     });
   }, { threshold: 0.1, rootMargin: "0px 0px -32px 0px" });
   document.querySelectorAll(".reveal").forEach(el => _obs.observe(el));
+
 })();
