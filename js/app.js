@@ -22,10 +22,7 @@
     (function raf(t) { lenis.raf(t); requestAnimationFrame(raf); })(0);
   }
 
-  // --- Page enter animation ---
-  if (!_reduced) document.body.classList.add('page-enter');
-
-  // --- Page exit on internal link click ---
+  // --- Page exit on internal link click (enter animation is handled by CSS on body) ---
   if (!_reduced) {
     document.addEventListener('click', e => {
       const link = e.target.closest('a[href]');
@@ -37,7 +34,7 @@
       e.preventDefault();
       if (lenis) lenis.stop();
       document.body.classList.add('page-exit');
-      setTimeout(() => { window.location.href = href; }, 260);
+      setTimeout(() => { window.location.href = href; }, 180);
     });
   }
 
