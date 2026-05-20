@@ -1,0 +1,168 @@
+/* ============================================================
+   COTAÇÃO LP — estilos específicos da página cotacao.html
+   Reaproveita tokens e classes de css/styles.css.
+   ============================================================ */
+
+.cot-hero {
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(34,211,238,0.10), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(34,211,238,0.05), transparent 60%),
+    linear-gradient(180deg, var(--ink-900) 0%, var(--ink-800) 100%);
+  color: var(--ink-100);
+  padding: 64px 0 80px;
+  position: relative;
+  overflow: hidden;
+}
+.cot-hero::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at 50% 30%, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 30%, transparent 75%);
+  pointer-events: none;
+}
+
+.cot-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+.cot-copy h1 { color: white; margin-bottom: 18px; }
+.cot-copy .eyebrow { color: var(--cyan-2); margin-bottom: 18px; }
+.cot-copy .lead { color: var(--ink-100); opacity: 0.85; max-width: 520px; margin-bottom: 24px; }
+
+/* Aviso destacado */
+.cot-alert {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: rgba(34,211,238,0.10);
+  border: 1px solid rgba(34,211,238,0.30);
+  color: var(--cyan-2);
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 28px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.cot-alert b { color: white; font-weight: 600; }
+.cot-alert svg { flex-shrink: 0; margin-top: 1px; }
+
+/* Bullets de reforço */
+.cot-bullets {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.cot-bullets li {
+  display: flex; align-items: flex-start; gap: 10px;
+  color: var(--ink-100); opacity: 0.88; font-size: 14.5px;
+}
+.cot-tick {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; flex-shrink: 0;
+  border-radius: 999px;
+  background: rgba(34,211,238,0.15);
+  color: var(--cyan-2);
+  font-size: 11px; font-weight: 700;
+  margin-top: 1px;
+}
+
+/* Formulário */
+.cot-form-card {
+  padding: 32px;
+  box-shadow: var(--shadow-lg);
+  background: var(--paper);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.cot-form-header { margin-bottom: 22px; }
+.cot-form-header h3 { font-size: 22px; margin-bottom: 4px; }
+.cot-form-header .muted {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+}
+
+/* Selo de parceria FrioRio — trust signal no ponto de decisão */
+.cot-partner {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 14px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  margin-bottom: 22px;
+}
+.cot-partner img {
+  height: 28px; width: auto;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+.cot-partner-text { display: flex; flex-direction: column; gap: 1px; line-height: 1.3; }
+.cot-partner-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cyan-ink);
+  font-weight: 500;
+}
+.cot-partner-line {
+  font-size: 13px;
+  color: var(--ink-700);
+  font-weight: 500;
+}
+
+#form-cotacao-lp .field { margin-bottom: 14px; }
+
+.cot-submit {
+  width: 100%;
+  justify-content: center;
+  margin-top: 8px;
+  gap: 10px;
+  background: #16A34A;
+  color: white;
+  font-weight: 600;
+}
+.cot-submit:hover { background: #15803D; transform: translateY(-1px); }
+.cot-submit:disabled { opacity: 0.7; cursor: progress; transform: none; }
+
+.cot-note {
+  margin: 12px 0 0;
+  font-size: 12.5px;
+  color: var(--ink-400);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Estado de sucesso */
+.cot-success {
+  display: none;
+  text-align: center;
+  padding: 8px 4px;
+}
+.cot-success.show { display: block; }
+.cot-success-icon {
+  width: 56px; height: 56px; margin: 0 auto 16px;
+  border-radius: 999px;
+  background: rgba(34,211,238,0.15);
+  color: var(--cyan-3);
+  display: flex; align-items: center; justify-content: center;
+}
+.cot-success h3 { margin-bottom: 8px; }
+.cot-success p { color: var(--ink-500); font-size: 14px; margin: 0 0 16px; }
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .cot-grid { grid-template-columns: 1fr; gap: 36px; }
+  .cot-hero { padding: 44px 0 56px; }
+  .cot-form-card { padding: 24px; }
+}
+@media (max-width: 520px) {
+  .cot-form-card { padding: 20px; }
+  .cot-copy h1 { font-size: clamp(32px, 8vw, 44px); }
+}
