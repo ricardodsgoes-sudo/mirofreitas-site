@@ -67,8 +67,7 @@
     "Nome: " + d.nome + "\n" +
     "WhatsApp: " + d.whatsapp + "\n" +
     "CNPJ: " + d.cnpj + "\n" +
-    "Preciso cotar: " + d.cotacao + "\n\n" +
-    "Tenho CNPJ e posso enviar foto/lista dos materiais pelo WhatsApp.";
+    "Preciso cotar: " + d.cotacao;
 
   const sendToSheet = async (payload) => {
     if (!APPS_SCRIPT_URL) return;
