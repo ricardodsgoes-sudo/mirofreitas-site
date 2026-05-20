@@ -207,6 +207,13 @@ html { background: #0B1F3A; }
 
 #form-cotacao-lp .field { margin-bottom: 14px; }
 
+/* Placeholders mais discretos */
+#form-cotacao-lp input::placeholder,
+#form-cotacao-lp textarea::placeholder {
+  color: var(--ink-300);
+  opacity: 0.55;
+}
+
 .cot-submit {
   width: 100%;
   justify-content: center;
