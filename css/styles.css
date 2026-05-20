@@ -442,11 +442,10 @@ h4 { font-size: 15px; letter-spacing: 0; }
 .audience-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; background: var(--line); border-radius: 12px; overflow: hidden; border: 1px solid var(--line); }
 .audience-grid > div { background: white; padding: 28px; display: flex; flex-direction: column; gap: 14px; min-height: 200px; }
 
-/* Page transitions — body starts hidden via CSS, elimina flash antes do JS */
-body { animation: pageIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) both; }
-@keyframes pageIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-.page-exit { animation: pageOut 0.18s ease-in forwards; pointer-events: none; }
-@keyframes pageOut { to { opacity: 0; } }
+/* Page transitions — fade-only, sem translate (evita layout shift que parece flash) */
+body { animation: pageIn 0.28s ease-out both; }
+@keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
+.page-exit { opacity: 0; transition: opacity 0.16s ease-in; pointer-events: none; }
 
 /* ===== Responsive ===== */
 @media (max-width: 1024px) {

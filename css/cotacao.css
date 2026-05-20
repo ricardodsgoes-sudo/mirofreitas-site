@@ -3,6 +3,94 @@
    Reaproveita tokens e classes de css/styles.css.
    ============================================================ */
 
+/* Evita flash branco entre páginas — html já carrega na cor do hero */
+html { background: #0B1F3A; }
+
+/* ===== LP Header (mínimo, sem navegação) ===== */
+.lp-header {
+  background: var(--ink-900);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 18px 0;
+  position: relative;
+  z-index: 5;
+}
+.lp-header .container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.lp-header .logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: white;
+}
+.lp-header .logo .accent { color: var(--cyan); margin-left: 2px; }
+.lp-header .lp-tagline {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-200);
+  border-left: 1px solid rgba(255,255,255,0.18);
+  padding-left: 18px;
+  line-height: 1.4;
+}
+@media (max-width: 640px) {
+  .lp-header { padding: 14px 0; }
+  .lp-header .container { gap: 12px; }
+  .lp-header .lp-tagline {
+    font-size: 10.5px;
+    border-left: 0;
+    padding-left: 0;
+    width: 100%;
+    color: var(--ink-300);
+  }
+}
+
+/* ===== LP Footer (institucional enxuto) ===== */
+.lp-footer {
+  background: var(--ink-900);
+  color: var(--ink-300);
+  padding: 28px 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.lp-footer .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.lp-footer-text {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  max-width: 540px;
+}
+.lp-footer-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+}
+.lp-footer-links a {
+  color: var(--ink-200);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.lp-footer-links a:hover { color: var(--cyan-2); }
+.lp-footer-links span { color: var(--ink-500); }
+@media (max-width: 640px) {
+  .lp-footer .container { flex-direction: column; align-items: flex-start; }
+  .lp-footer-text { font-size: 12px; }
+}
+
+/* Sem barra de progresso de scroll na LP — distração */
+.lp-mode .scroll-progress { display: none; }
+
 .cot-hero {
   background:
     radial-gradient(1200px 600px at 85% -10%, rgba(34,211,238,0.10), transparent 60%),

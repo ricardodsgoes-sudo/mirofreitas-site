@@ -34,7 +34,7 @@
       e.preventDefault();
       if (lenis) lenis.stop();
       document.body.classList.add('page-exit');
-      setTimeout(() => { window.location.href = href; }, 180);
+      setTimeout(() => { window.location.href = href; }, 160);
     });
   }
 
