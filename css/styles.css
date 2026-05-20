@@ -79,7 +79,10 @@ h4 { font-size: 15px; letter-spacing: 0; }
 @media (min-width: 760px) { .container { padding: 0 32px; } }
 
 /* ===== Topbar ===== */
-.topbar { background: var(--ink-900); color: var(--ink-100); font-size: 12.5px; }
+.topbar {
+  background: var(--ink-900); color: var(--ink-100); font-size: 12.5px;
+  view-transition-name: site-topbar; /* extraído do root — não pisca na troca */
+}
 .topbar .row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; gap: 16px; flex-wrap: wrap; }
 .topbar a { color: inherit; }
 .topbar .left { display: flex; gap: 20px; flex-wrap: wrap; }
@@ -99,6 +102,7 @@ h4 { font-size: 15px; letter-spacing: 0; }
   border-bottom: 1px solid var(--line);
   position: sticky; top: 0; z-index: 40;
   backdrop-filter: saturate(1.2) blur(8px);
+  view-transition-name: site-header; /* extraído do root — fica fixo durante a troca */
 }
 .header .row { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; gap: 24px; }
 .logo { font-family: var(--font-display); font-weight: 700; font-size: 22px; letter-spacing: -0.02em; color: var(--ink-900); }
@@ -110,7 +114,7 @@ h4 { font-size: 15px; letter-spacing: 0; }
   position: relative; z-index: 1;
 }
 .nav a:hover { color: var(--ink-900); }
-.nav a.active { color: var(--ink-900); }
+.nav a.active { color: var(--ink-900); font-weight: 600; }
 .nav-pill {
   position: absolute;
   top: 50%; transform: translateY(-50%);
@@ -119,9 +123,10 @@ h4 { font-size: 15px; letter-spacing: 0; }
   border-radius: 999px;
   pointer-events: none;
   z-index: 0;
-  transition: left 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-              width 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 0.2s ease;
+  opacity: 0; /* JS posiciona após fontes carregarem */
+  transition: left 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+              width 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.18s ease;
 }
 
 /* Hamburger */
@@ -442,10 +447,44 @@ h4 { font-size: 15px; letter-spacing: 0; }
 .audience-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; background: var(--line); border-radius: 12px; overflow: hidden; border: 1px solid var(--line); }
 .audience-grid > div { background: white; padding: 28px; display: flex; flex-direction: column; gap: 14px; min-height: 200px; }
 
-/* Page transitions — fade-only, sem translate (evita layout shift que parece flash) */
-body { animation: pageIn 0.28s ease-out both; }
-@keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
-.page-exit { opacity: 0; transition: opacity 0.16s ease-in; pointer-events: none; }
+/* ── View Transitions API (cross-document) ──────────────────
+   Chrome 126+, Safari 18.2+: saída recua, entrada sobe suavemente.
+   Firefox / browsers sem suporte: navegação instantânea (sem flash). ── */
+@view-transition { navigation: auto; }
+
+::view-transition-old(root) {
+  animation: 0.15s ease-out both vt-out;
+}
+::view-transition-new(root) {
+  animation: 0.22s ease-out both vt-in;
+}
+@keyframes vt-out { to   { opacity: 0; } }
+@keyframes vt-in  { from { opacity: 0; } }
+
+/* Header e topbar ficam completamente estáticos — sem animação própria */
+::view-transition-old(site-header),
+::view-transition-new(site-header),
+::view-transition-old(site-topbar),
+::view-transition-new(site-topbar) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* ── Hero entrance animations (disparam a cada navegação) ─── */
+@keyframes hero-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes hero-right {
+  from { opacity: 0; transform: translateX(28px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.hero-grid .eyebrow              { animation: hero-up    0.6s  cubic-bezier(0.16,1,0.3,1) 0.10s both; }
+.hero-grid h1                     { animation: hero-up    0.7s  cubic-bezier(0.16,1,0.3,1) 0.20s both; }
+.hero-grid .mobile-stack          { animation: hero-up    0.6s  cubic-bezier(0.16,1,0.3,1) 0.32s both; }
+.hero-grid .hero-stats            { animation: hero-up    0.6s  cubic-bezier(0.16,1,0.3,1) 0.44s both; }
+.hero-grid .grid-2 > *:last-child { animation: hero-right 0.75s cubic-bezier(0.16,1,0.3,1) 0.14s both; }
 
 /* ===== Responsive ===== */
 @media (max-width: 1024px) {
@@ -570,9 +609,14 @@ body { animation: pageIn 0.28s ease-out both; }
 .stagger > *:nth-child(6) { transition-delay: 0.45s; }
 
 @media (prefers-reduced-motion: reduce) {
-  body { animation: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .scroll-progress { display: none; }
-  .page-exit { animation: none; }
   .nav-pill { transition: none; }
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation-duration: 0.001s; }
+  .hero-grid .eyebrow,
+  .hero-grid h1,
+  .hero-grid .mobile-stack,
+  .hero-grid .hero-stats,
+  .hero-grid .grid-2 > *:last-child { animation: none; }
 }

@@ -22,19 +22,14 @@
     (function raf(t) { lenis.raf(t); requestAnimationFrame(raf); })(0);
   }
 
-  // --- Page exit on internal link click (enter animation is handled by CSS on body) ---
-  if (!_reduced) {
+  // --- Para o Lenis antes de navegar (View Transitions API cuida da animação) ---
+  if (lenis) {
     document.addEventListener('click', e => {
       const link = e.target.closest('a[href]');
       if (!link || link.target === '_blank') return;
       const href = link.getAttribute('href');
       if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || /^https?:/.test(href)) return;
-      const current = location.pathname.split('/').pop() || 'index.html';
-      if (href === current) return;
-      e.preventDefault();
-      if (lenis) lenis.stop();
-      document.body.classList.add('page-exit');
-      setTimeout(() => { window.location.href = href; }, 160);
+      lenis.stop();
     });
   }
 
@@ -64,10 +59,17 @@
       if (instant) requestAnimationFrame(() => { _pill.style.transition = ''; });
     };
 
-    if (_activeLink) {
-      _movePill(_activeLink, true);
+    // Posiciona após fontes carregarem — evita "jump" quando Inter/Space Grotesk
+    // altera o tamanho dos links e o pill animaria até a posição correta.
+    const _placePill = () => {
+      if (_activeLink) _movePill(_activeLink, true);
+      // Se não tiver link ativo, permanece invisível (opacity: 0 no CSS).
+    };
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(_placePill);
     } else {
-      _pill.style.opacity = '0';
+      _placePill();
     }
 
     _nav.querySelectorAll('a').forEach(a => {
