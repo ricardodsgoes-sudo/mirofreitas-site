@@ -13,6 +13,33 @@
   const WHATSAPP_NUMBER = "5541996483352";
   const ORIGEM = "Landing cotação Miro";
   const BTN_LABEL_DEFAULT = "Enviar cotação pelo WhatsApp";
+  const META_PIXEL_ID = "958971496954944";
+
+  // --- Meta Pixel: carrega uma única vez e dispara PageView ---
+  (function loadMetaPixel() {
+    if (!META_PIXEL_ID) return;
+    if (window.fbq) return;
+    (function (f, b, e, v, n, t, s) {
+      if (f.fbq) return;
+      n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n; n.loaded = !0; n.version = "2.0"; n.queue = [];
+      t = b.createElement(e); t.async = !0;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+    window.fbq("init", META_PIXEL_ID);
+    window.fbq("track", "PageView");
+  })();
+
+  const trackLead = () => {
+    if (META_PIXEL_ID && window.fbq) {
+      try { window.fbq("track", "Lead"); } catch (_) {}
+    }
+  };
 
   // --- Captura UTMs uma vez ---
   const utms = (function () {
@@ -132,10 +159,13 @@
     // 1) Tenta enviar para a planilha (não bloqueia o lead se falhar).
     await sendToSheet(payload);
 
-    // 2) Restaura o botão (caso o navegador não troque de aba imediatamente).
+    // 2) Dispara Lead no Meta Pixel (formulário já validado).
+    trackLead();
+
+    // 3) Restaura o botão (caso o navegador não troque de aba imediatamente).
     if (btn) { btn.disabled = false; btn.textContent = BTN_LABEL_DEFAULT; }
 
-    // 3) Abre o WhatsApp com a mensagem pronta.
+    // 4) Abre o WhatsApp com a mensagem pronta.
     const waUrl = "https://wa.me/" + WHATSAPP_NUMBER +
                   "?text=" + encodeURIComponent(buildWhatsMessage(fields));
     window.location.href = waUrl;
