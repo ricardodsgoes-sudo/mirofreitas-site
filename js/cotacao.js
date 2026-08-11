@@ -1,5 +1,5 @@
 /* ============================================================
-   COTAÇÃO B2B — WhatsApp direto, UTMs e Meta Pixel
+   COTAÇÃO B2B — WhatsApp direto, UTMs, GTM e Google Sheets
    ============================================================ */
 (function (root, factory) {
   const api = factory();
@@ -105,13 +105,20 @@
     }
   };
 
+  const pushDataLayerEvent = (dataLayer, payload) => {
+    if (!Array.isArray(dataLayer) || !payload || typeof payload !== "object") return false;
+    dataLayer.push(payload);
+    return true;
+  };
+
   return Object.freeze({
     captureUtms,
     buildWhatsMessage,
     buildWhatsappUrl,
     classifyDevice,
     buildTrackingPayload,
-    sendSheetEvent
+    sendSheetEvent,
+    pushDataLayerEvent
   });
 });
 
@@ -121,60 +128,14 @@
   if (typeof window === "undefined" || typeof document === "undefined") return;
 
   const CONFIG = Object.freeze({
-    metaPixelId: "958971496954944",
     whatsappNumber: "5541996483352",
     appsScriptUrl: "https://script.google.com/macros/s/AKfycbyWS6C3mhXKyMS7Hp46p8NxUK9QfAIEkXdjGRNvGLNELfplt2bgoR3CDPS0Au21RyyEYw/exec"
   });
 
-  const META_PIXEL_ID = CONFIG.metaPixelId.trim();
   const WHATSAPP_NUMBER = CONFIG.whatsappNumber.trim();
   const APPS_SCRIPT_URL = CONFIG.appsScriptUrl.trim();
   const ads = window.CotacaoAds;
   const isLocalPreview = ["localhost", "127.0.0.1"].includes(window.location.hostname);
-
-  const trackMeta = eventName => {
-    if (!META_PIXEL_ID || typeof window.fbq !== "function") return;
-    try {
-      window.fbq("track", eventName);
-    } catch (error) {
-      console.warn("[cotacao] O evento do Meta Pixel não pôde ser registrado.", error);
-    }
-  };
-
-  const loadMetaPixel = () => {
-    if (isLocalPreview) return;
-    if (!/^\d{5,20}$/.test(META_PIXEL_ID)) return;
-
-    if (!window.fbq) {
-      const fbq = function () {
-        if (fbq.callMethod) fbq.callMethod.apply(fbq, arguments);
-        else fbq.queue.push(arguments);
-      };
-
-      window.fbq = fbq;
-      window._fbq = fbq;
-      fbq.push = fbq;
-      fbq.loaded = true;
-      fbq.version = "2.0";
-      fbq.queue = [];
-
-      const script = document.createElement("script");
-      script.async = true;
-      script.src = "https://connect.facebook.net/en_US/fbevents.js";
-      const firstScript = document.getElementsByTagName("script")[0];
-      if (firstScript && firstScript.parentNode) firstScript.parentNode.insertBefore(script, firstScript);
-      else document.head.appendChild(script);
-    }
-
-    try {
-      window.fbq("init", META_PIXEL_ID);
-      trackMeta("PageView");
-    } catch (error) {
-      console.warn("[cotacao] O Meta Pixel não pôde ser inicializado.", error);
-    }
-  };
-
-  loadMetaPixel();
 
   const utms = ads.captureUtms(window.location.search);
   const whatsappUrl = ads.buildWhatsappUrl(WHATSAPP_NUMBER, utms);
@@ -212,8 +173,17 @@
     link.target = "_blank";
     link.rel = "noopener";
     link.addEventListener("click", () => {
-      trackMeta("Lead");
-      sendTrackingEvent("WhatsAppClick", link.dataset.ctaLocation || "unknown");
+      const ctaLocation = link.dataset.ctaLocation || "unknown";
+      ads.pushDataLayerEvent(window.dataLayer || (window.dataLayer = []), {
+        event: "whatsapp_click",
+        meta_event_name: "Contact",
+        cta_location: ctaLocation,
+        ...utms,
+        page_location: window.location.href,
+        page_referrer: document.referrer,
+        device: ads.classifyDevice(window.innerWidth)
+      });
+      sendTrackingEvent("WhatsAppClick", ctaLocation);
     });
   });
 })();
