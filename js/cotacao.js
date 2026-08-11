@@ -1,156 +1,219 @@
 /* ============================================================
-   COTAÇÃO LP — captura de leads, máscaras, validação,
-   envio para Google Apps Script (planilha) e abertura do WhatsApp.
+   COTAÇÃO B2B — WhatsApp direto, UTMs e Meta Pixel
    ============================================================ */
-(function () {
-  const form = document.getElementById("form-cotacao-lp");
-  if (!form) return;
+(function (root, factory) {
+  const api = factory();
 
-  // Cole aqui a URL pública do Apps Script depois de publicar como Web App.
-  // Enquanto estiver vazia, o formulário envia direto para o WhatsApp.
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyWS6C3mhXKyMS7Hp46p8NxUK9QfAIEkXdjGRNvGLNELfplt2bgoR3CDPS0Au21RyyEYw/exec";
+  if (typeof module === "object" && module.exports) module.exports = api;
+  else root.CotacaoAds = api;
+})(typeof globalThis !== "undefined" ? globalThis : this, function () {
+  "use strict";
 
-  const WHATSAPP_NUMBER = "5541996483352";
-  const ORIGEM = "Landing cotação Miro";
-  const BTN_LABEL_DEFAULT = "Enviar cotação pelo WhatsApp";
-  const META_PIXEL_ID = "958971496954944";
+  const UTM_KEYS = Object.freeze([
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_content",
+    "utm_term"
+  ]);
 
-  // O snippet base do Meta Pixel é carregado inline no <head> de cotacao.html
-  // (forma recomendada pela Meta). Aqui só disparamos o evento Lead após
-  // validação do formulário.
-  const trackLead = () => {
-    if (META_PIXEL_ID && window.fbq) {
-      try { window.fbq("track", "Lead"); } catch (_) {}
-    }
+  const captureUtms = search => {
+    const params = new URLSearchParams(search || "");
+    return UTM_KEYS.reduce((utms, key) => {
+      utms[key] = params.get(key) || "";
+      return utms;
+    }, {});
   };
 
-  // --- Captura UTMs uma vez ---
-  const utms = (function () {
-    const p = new URLSearchParams(window.location.search);
+  const buildWhatsMessage = (utms = {}) => {
+    const lines = [
+      "Olá, Miro. Vim pela página de cotação e gostaria de atendimento B2B."
+    ];
+
+    const campaign = [
+      utms.utm_source && `Fonte: ${utms.utm_source}`,
+      utms.utm_medium && `Mídia: ${utms.utm_medium}`,
+      utms.utm_campaign && `Campanha: ${utms.utm_campaign}`,
+      utms.utm_content && `Anúncio: ${utms.utm_content}`,
+      utms.utm_term && `Termo: ${utms.utm_term}`
+    ].filter(Boolean);
+
+    if (campaign.length) lines.push("", "Origem do anúncio:", ...campaign);
+    return lines.join("\n");
+  };
+
+  const buildWhatsappUrl = (number, utms = {}) => {
+    const digits = String(number || "").replace(/\D/g, "");
+    return `https://wa.me/${digits}?text=${encodeURIComponent(buildWhatsMessage(utms))}`;
+  };
+
+  const classifyDevice = width => {
+    const normalizedWidth = Number(width);
+    if (!Number.isFinite(normalizedWidth) || normalizedWidth <= 0) return "desktop";
+    return normalizedWidth <= 700 ? "mobile" : normalizedWidth <= 980 ? "tablet" : "desktop";
+  };
+
+  const buildTrackingPayload = ({
+    event,
+    cta = "",
+    search = "",
+    page = "",
+    referrer = "",
+    viewportWidth = 0
+  }) => {
+    const params = new URLSearchParams(search || "");
+
     return {
-      utm_source:   p.get("utm_source")   || "",
-      utm_medium:   p.get("utm_medium")   || "",
-      utm_campaign: p.get("utm_campaign") || "",
-      utm_content:  p.get("utm_content")  || "",
-      utm_term:     p.get("utm_term")     || ""
+      event,
+      cta,
+      ...captureUtms(search),
+      page,
+      referrer,
+      device: classifyDevice(viewportWidth),
+      fbclid: params.get("fbclid") || ""
     };
-  })();
-
-  // --- Máscaras ---
-  const cnpjInput = form.querySelector('[name="cnpj"]');
-  const waInput   = form.querySelector('[name="whatsapp"]');
-
-  const formatCNPJ = v => {
-    v = (v || "").replace(/\D/g, "").slice(0, 14);
-    return v
-      .replace(/^(\d{2})(\d)/, "$1.$2")
-      .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
-      .replace(/\.(\d{3})(\d)/, ".$1/$2")
-      .replace(/(\d{4})(\d)/, "$1-$2");
-  };
-  const formatTel = v => {
-    v = (v || "").replace(/\D/g, "").slice(0, 11);
-    if (v.length <= 10) {
-      return v.replace(/^(\d{2})(\d)/, "($1) $2").replace(/(\d{4})(\d)/, "$1-$2");
-    }
-    return v.replace(/^(\d{2})(\d)/, "($1) $2").replace(/(\d{5})(\d)/, "$1-$2");
   };
 
-  if (cnpjInput) cnpjInput.addEventListener("input", e => e.target.value = formatCNPJ(e.target.value));
-  if (waInput)   waInput.addEventListener("input",   e => e.target.value = formatTel(e.target.value));
+  const sendSheetEvent = async ({ endpoint, payload, navigatorRef, fetchRef }) => {
+    if (!endpoint) return false;
 
-  // --- Helpers ---
-  const mark = (name, hasError) => {
-    const field = form.querySelector(`[data-field="${name}"]`);
-    if (!field) return;
-    field.classList.toggle("error", hasError);
-  };
+    const body = JSON.stringify(payload);
 
-  const isCNPJValid  = raw => (raw || "").replace(/\D/g, "").length === 14;
-  const isPhoneValid = raw => {
-    const d = (raw || "").replace(/\D/g, "").length;
-    return d >= 10 && d <= 11;
-  };
-
-  const buildWhatsMessage = d =>
-    "Olá, Miro. Vim pelo anúncio e quero solicitar uma cotação B2B.\n\n" +
-    "Nome: " + d.nome + "\n" +
-    "WhatsApp: " + d.whatsapp + "\n" +
-    "CNPJ: " + d.cnpj + "\n" +
-    "Preciso cotar: " + d.cotacao;
-
-  const sendToSheet = async (payload) => {
-    if (!APPS_SCRIPT_URL) return;
     try {
-      await fetch(APPS_SCRIPT_URL, {
+      if (
+        navigatorRef &&
+        typeof navigatorRef.sendBeacon === "function" &&
+        navigatorRef.sendBeacon(endpoint, body)
+      ) {
+        return true;
+      }
+    } catch (_) {}
+
+    if (typeof fetchRef !== "function") return false;
+
+    try {
+      await fetchRef(endpoint, {
         method: "POST",
         mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body,
+        keepalive: true
       });
-    } catch (err) {
-      // Falha no envio para planilha não bloqueia o WhatsApp.
-      console.warn("[cotacao] Falha ao enviar para planilha:", err);
+      return true;
+    } catch (_) {
+      return false;
     }
   };
 
-  // --- Submit ---
-  form.addEventListener("submit", async (ev) => {
-    ev.preventDefault();
+  return Object.freeze({
+    captureUtms,
+    buildWhatsMessage,
+    buildWhatsappUrl,
+    classifyDevice,
+    buildTrackingPayload,
+    sendSheetEvent
+  });
+});
 
-    const fields = {
-      nome:     (form.nome.value || "").trim(),
-      whatsapp: (form.whatsapp.value || "").trim(),
-      cnpj:     (form.cnpj.value || "").trim(),
-      cotacao:  (form.cotacao.value || "").trim()
-    };
+(function () {
+  "use strict";
 
-    let ok = true;
-    const fail = name => { mark(name, true); ok = false; };
+  if (typeof window === "undefined" || typeof document === "undefined") return;
 
-    if (!fields.nome)                 fail("nome");     else mark("nome", false);
-    if (!fields.whatsapp || !isPhoneValid(fields.whatsapp)) fail("whatsapp"); else mark("whatsapp", false);
-    if (!fields.cnpj || !isCNPJValid(fields.cnpj))          fail("cnpj");     else mark("cnpj", false);
-    if (!fields.cotacao)              fail("cotacao");  else mark("cotacao", false);
+  const CONFIG = Object.freeze({
+    metaPixelId: "958971496954944",
+    whatsappNumber: "5541996483352",
+    appsScriptUrl: "https://script.google.com/macros/s/AKfycbyWS6C3mhXKyMS7Hp46p8NxUK9QfAIEkXdjGRNvGLNELfplt2bgoR3CDPS0Au21RyyEYw/exec"
+  });
 
-    if (!ok) {
-      const firstErr = form.querySelector(".field.error");
-      if (firstErr) firstErr.scrollIntoView({ behavior: "smooth", block: "center" });
-      return;
+  const META_PIXEL_ID = CONFIG.metaPixelId.trim();
+  const WHATSAPP_NUMBER = CONFIG.whatsappNumber.trim();
+  const APPS_SCRIPT_URL = CONFIG.appsScriptUrl.trim();
+  const ads = window.CotacaoAds;
+  const isLocalPreview = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+
+  const trackMeta = eventName => {
+    if (!META_PIXEL_ID || typeof window.fbq !== "function") return;
+    try {
+      window.fbq("track", eventName);
+    } catch (error) {
+      console.warn("[cotacao] O evento do Meta Pixel não pôde ser registrado.", error);
+    }
+  };
+
+  const loadMetaPixel = () => {
+    if (isLocalPreview) return;
+    if (!/^\d{5,20}$/.test(META_PIXEL_ID)) return;
+
+    if (!window.fbq) {
+      const fbq = function () {
+        if (fbq.callMethod) fbq.callMethod.apply(fbq, arguments);
+        else fbq.queue.push(arguments);
+      };
+
+      window.fbq = fbq;
+      window._fbq = fbq;
+      fbq.push = fbq;
+      fbq.loaded = true;
+      fbq.version = "2.0";
+      fbq.queue = [];
+
+      const script = document.createElement("script");
+      script.async = true;
+      script.src = "https://connect.facebook.net/en_US/fbevents.js";
+      const firstScript = document.getElementsByTagName("script")[0];
+      if (firstScript && firstScript.parentNode) firstScript.parentNode.insertBefore(script, firstScript);
+      else document.head.appendChild(script);
     }
 
-    const btn = document.getElementById("cot-submit");
-    if (btn) { btn.disabled = true; btn.textContent = "Enviando..."; }
+    try {
+      window.fbq("init", META_PIXEL_ID);
+      trackMeta("PageView");
+    } catch (error) {
+      console.warn("[cotacao] O Meta Pixel não pôde ser inicializado.", error);
+    }
+  };
 
-    // Payload para a planilha (ordem segue o cabeçalho do .gs)
-    const payload = {
-      data:         new Date().toISOString(),
-      nome:         fields.nome,
-      whatsapp:     fields.whatsapp,
-      cnpj:         fields.cnpj,
-      cotacao:      fields.cotacao,
-      origem:       ORIGEM,
-      utm_source:   utms.utm_source,
-      utm_medium:   utms.utm_medium,
-      utm_campaign: utms.utm_campaign,
-      utm_content:  utms.utm_content,
-      utm_term:     utms.utm_term,
-      pagina:       window.location.href,
-      userAgent:    navigator.userAgent
-    };
+  loadMetaPixel();
 
-    // 1) Tenta enviar para a planilha (não bloqueia o lead se falhar).
-    await sendToSheet(payload);
+  const utms = ads.captureUtms(window.location.search);
+  const whatsappUrl = ads.buildWhatsappUrl(WHATSAPP_NUMBER, utms);
+  const sendTrackingEvent = (event, cta = "") => {
+    if (isLocalPreview) return;
 
-    // 2) Dispara Lead no Meta Pixel (formulário já validado).
-    trackLead();
+    const payload = ads.buildTrackingPayload({
+      event,
+      cta,
+      search: window.location.search,
+      page: window.location.href,
+      referrer: document.referrer,
+      viewportWidth: window.innerWidth
+    });
 
-    // 3) Restaura o botão (caso o navegador não troque de aba imediatamente).
-    if (btn) { btn.disabled = false; btn.textContent = BTN_LABEL_DEFAULT; }
+    void ads.sendSheetEvent({
+      endpoint: APPS_SCRIPT_URL,
+      payload,
+      navigatorRef: window.navigator,
+      fetchRef: typeof window.fetch === "function" ? window.fetch.bind(window) : undefined
+    });
+  };
 
-    // 4) Abre o WhatsApp com a mensagem pronta.
-    const waUrl = "https://wa.me/" + WHATSAPP_NUMBER +
-                  "?text=" + encodeURIComponent(buildWhatsMessage(fields));
-    window.location.href = waUrl;
+  const trackPageView = () => {
+    if (isLocalPreview || window.__cotacaoSheetPageViewSent) return;
+    window.__cotacaoSheetPageViewSent = true;
+    sendTrackingEvent("PageView");
+  };
+
+  if (document.readyState === "complete") trackPageView();
+  else window.addEventListener("load", trackPageView, { once: true });
+
+  document.querySelectorAll("[data-whatsapp-cta]").forEach(link => {
+    link.href = whatsappUrl;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.addEventListener("click", () => {
+      trackMeta("Lead");
+      sendTrackingEvent("WhatsAppClick", link.dataset.ctaLocation || "unknown");
+    });
   });
 })();
