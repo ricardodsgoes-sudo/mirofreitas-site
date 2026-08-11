@@ -13,13 +13,17 @@
 
   if (!_reduced && typeof Lenis !== 'undefined') {
     lenis = new Lenis({
-      lerp: 0.07,
+      lerp: 0.09,
       smoothWheel: true,
-      smoothTouch: false,
-      wheelMultiplier: 0.85,
+      syncTouch: false,
+      wheelMultiplier: 0.9,
     });
 
-    (function raf(t) { lenis.raf(t); requestAnimationFrame(raf); })(0);
+    const raf = time => {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    };
+    requestAnimationFrame(raf);
   }
 
   // --- Para o Lenis antes de navegar (View Transitions API cuida da animação) ---

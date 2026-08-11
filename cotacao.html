@@ -3,150 +3,239 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<meta name="theme-color" content="#0B1F3A" />
-<title>Cotação B2B — Miro Freitas</title>
-<meta name="description" content="Cotação B2B para empresas com CNPJ. Peças, gases, cobre, ferramentas e materiais de refrigeração direto com o Miro." />
+<meta name="theme-color" content="#052c54" />
+<title>Cotação de cobre e refrigeração B2B — Miro Freitas</title>
+<meta name="description" content="Cotação B2B de cobre, peças, gases, compressores e materiais de refrigeração. Atendimento direto com Miro Freitas para empresas com CNPJ." />
 <meta name="robots" content="index,follow" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <link rel="canonical" href="https://mirofreitas.com/cotacao" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Cotação B2B — Miro Freitas" />
-<meta property="og:description" content="Atendimento direto com o Miro para empresas com CNPJ. Envie sua necessidade e receba cotação pelo WhatsApp." />
-<meta property="og:image" content="img/og-image.png" />
+<meta property="og:description" content="Cobre, peças e materiais de refrigeração com atendimento direto para empresas e profissionais com CNPJ." />
+<meta property="og:image" content="img/og-image%201.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="img/og-image.png" />
+<meta name="twitter:image" content="img/og-image%201.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="css/vendor/lenis-1.3.25.css" />
 <link rel="stylesheet" href="css/cotacao.css" />
-
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '958971496954944');
-fbq('track', 'PageView');
-</script>
-<!-- End Meta Pixel Code -->
 </head>
 <body class="lp-mode">
-<noscript>
-  <img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=958971496954944&ev=PageView&noscript=1" />
-</noscript>
-<!-- LP HEADER (minimal, sem navegação — foco total na conversão) -->
-<header class="lp-header">
-  <div class="container">
-    <div class="logo">MIRO<span class="accent">FREITAS</span></div>
-    <span class="lp-tagline">Representação técnica e cotação consultiva em refrigeração.</span>
+<svg class="brand-symbols" aria-hidden="true" focusable="false">
+  <symbol id="brand-whatsapp" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+  </symbol>
+  <symbol id="brand-instagram" viewBox="0 0 24 24">
+    <path d="M7.03.084c-1.277.06-2.149.264-2.911.563-.789.308-1.458.72-2.123 1.388C1.33 2.703.92 3.372.615 4.162.32 4.926.12 5.799.063 7.076.007 8.354-.006 8.765.001 12.023c.006 3.259.02 3.667.082 4.947.061 1.277.264 2.149.564 2.911.308.789.72 1.457 1.388 2.123.668.665 1.336 1.074 2.128 1.38.763.295 1.636.496 2.914.552 1.277.056 1.688.069 4.946.063 3.258-.006 3.668-.021 4.948-.081 1.28-.061 2.147-.266 2.91-.563.789-.309 1.458-.72 2.123-1.388.665-.668 1.074-1.338 1.38-2.128.295-.764.496-1.636.551-2.913.056-1.28.07-1.689.063-4.948-.006-3.258-.021-3.667-.081-4.946-.061-1.28-.264-2.149-.564-2.912-.308-.789-.72-1.457-1.387-2.123C21.298 1.33 20.628.921 19.838.617 19.074.321 18.202.12 16.924.065 15.647.009 15.236-.005 11.977.001 8.718.008 8.31.022 7.03.084m.14 21.693c-1.17-.051-1.805-.245-2.228-.408-.561-.216-.96-.477-1.382-.895-.422-.418-.681-.819-.9-1.378-.164-.424-.362-1.058-.417-2.228-.06-1.265-.072-1.644-.079-4.848-.007-3.204.005-3.583.061-4.848.05-1.169.246-1.805.408-2.228.216-.562.476-.96.895-1.382.419-.422.818-.681 1.378-.9.423-.165 1.058-.361 2.227-.417 1.266-.06 1.645-.072 4.848-.079 3.203-.007 3.584.005 4.85.061 1.168.051 1.805.244 2.228.408.56.216.96.475 1.381.895.422.419.682.818.901 1.379.165.422.362 1.056.417 2.226.06 1.266.074 1.645.08 4.848.005 3.203-.006 3.583-.061 4.848-.051 1.17-.245 1.806-.408 2.23-.216.56-.477.96-.896 1.381-.419.422-.818.681-1.378.9-.422.165-1.058.362-2.226.417-1.266.06-1.645.072-4.85.079-3.204.007-3.582-.006-4.848-.061M16.953 5.586a1.44 1.44 0 101.437-1.442 1.44 1.44 0 00-1.437 1.442M5.839 12.012c.006 3.403 2.77 6.156 6.172 6.15 3.403-.007 6.157-2.77 6.151-6.174-.007-3.403-2.771-6.156-6.174-6.15-3.403.007-6.156 2.771-6.15 6.174M8 12.008A4 4 0 1112.008 16 4 4 0 018 12.008" />
+  </symbol>
+  <symbol id="brand-facebook" viewBox="0 0 24 24">
+    <path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 011.141.195v3.325a8.623 8.623 0 00-.653-.036 26.805 26.805 0 00-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 00-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z" />
+  </symbol>
+</svg>
+
+<header class="lp-header" aria-label="Cabeçalho da página">
+  <div class="container lp-header__inner">
+    <a class="lp-header__brand" href="index.html" aria-label="FrioRio — página inicial">
+      <img src="img/logo friorio.webp" alt="FrioRio Refrigeração" width="196" height="55" />
+    </a>
+    <div class="lp-header__representative">
+      <img src="img/mirofreitas2.jpeg" alt="" width="48" height="48" />
+      <span>
+        <strong>Miro Freitas</strong>
+        <small>Representante técnico/comercial da FrioRio</small>
+      </span>
+    </div>
   </div>
 </header>
 
-<!-- HERO + FORM (lead capture) -->
-<section class="cot-hero">
-  <div class="container cot-grid">
+<main>
+  <section id="inicio" class="cot-hero" aria-labelledby="hero-title">
+    <div class="container cot-hero__grid">
+      <div class="cot-hero__content">
+        <div class="cot-hero__copy">
+          <p class="cot-kicker">Cotação técnica para CNPJ</p>
+          <h1 id="hero-title">Cotação de cobre e materiais de refrigeração para empresas</h1>
+          <p class="cot-hero__lead">Tubos, conexões, isolamento, compressores e outros itens para instalação, revenda e manutenção.</p>
+          <a class="cot-whatsapp-cta cot-hero__mobile-cta" href="https://wa.me/5541996483352?text=Ol%C3%A1%2C%20Miro.%20Vim%20pela%20p%C3%A1gina%20de%20cota%C3%A7%C3%A3o%20e%20gostaria%20de%20atendimento%20B2B." target="_blank" rel="noopener" data-whatsapp-cta data-cta-location="hero-mobile">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><use href="#brand-whatsapp" /></svg>
+            <span>Solicitar cotação pelo WhatsApp</span>
+          </a>
+        </div>
 
-    <!-- Coluna esquerda: copy -->
-    <div class="cot-copy">
-      <div class="eyebrow"><span class="dot"></span>Cotação B2B · direto com o Miro</div>
-      <h1>Solicite sua cotação de <span class="italic-accent">materiais de refrigeração</span>.</h1>
-      <p class="lead">
-        Peças, gases, cobre, compressores e componentes técnicos com atendimento direto e consultivo.
-      </p>
-
-      <div class="cot-alert" role="note">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-        <div>
-          <b>Atendimento exclusivo para CNPJ.</b>
+        <div class="cot-hero__products">
+          <img src="img/cobre-hero-caracol-espaguete-final.webp" alt="Bobina de cobre em forma de caracol com tubos de cobre tipo espaguete" width="1254" height="1254" fetchpriority="high" />
         </div>
       </div>
 
-      <ul class="cot-bullets">
-        <li><span class="cot-tick">✓</span> Envie sua lista ou referência da peça pelo WhatsApp.</li>
-        <li><span class="cot-tick">✓</span> Ajuda para cotar o item certo, com mais agilidade e menos erro na compra.</li>
-        <li><span class="cot-tick">✓</span> Cote peças, gases, cobre e materiais técnicos direto com quem entende do setor.</li>
-      </ul>
-    </div>
-
-    <!-- Coluna direita: formulário -->
-    <div class="card cot-form-card">
-      <div class="cot-form-header">
-        <h3>Solicite sua cotação</h3>
-        <p class="muted">Leva menos de 30 segundos.</p>
-      </div>
-
-      <div class="cot-partner" aria-label="Representação oficial FrioRio">
-        <img src="img/logo friorio.webp" alt="FrioRio" width="72" height="28" loading="lazy" />
-        <div class="cot-partner-text">
-          <span class="cot-partner-eyebrow">Representação oficial</span>
-          <span class="cot-partner-line">Atendimento direto pelo representante FrioRio</span>
+      <aside class="cot-b2b-card" aria-labelledby="b2b-title">
+        <div class="cot-b2b-card__eyebrow">
+          <span class="cot-b2b-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20v-2a6 6 0 0112 0v2M14 15a5 5 0 017 4v1"/></svg>
+          </span>
+          Atendimento exclusivo B2B
         </div>
-      </div>
-
-      <form id="form-cotacao-lp" novalidate>
-        <div class="field" data-field="nome">
-          <label>Nome</label>
-          <input name="nome" type="text" autocomplete="name" placeholder="Seu nome" />
-          <div class="err">Obrigatório.</div>
-        </div>
-
-        <div class="field" data-field="whatsapp">
-          <label>WhatsApp</label>
-          <input name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" />
-          <div class="err">Informe um WhatsApp válido.</div>
-        </div>
-
-        <div class="field" data-field="cnpj">
-          <label>CNPJ</label>
-          <input name="cnpj" type="text" inputmode="numeric" placeholder="00.000.000/0001-00" />
-          <div class="err">CNPJ deve ter 14 dígitos.</div>
-        </div>
-
-        <div class="field" data-field="cotacao">
-          <label>O que precisa cotar?</label>
-          <textarea name="cotacao" rows="4" placeholder="Ex: 5 compressores Elgin 1/2HP, 20m de cobre 3/8&quot;, gás R-410A…"></textarea>
-          <div class="err">Descreva o que precisa cotar.</div>
-        </div>
-
-        <button id="cot-submit" type="submit" class="btn btn-primary btn-lg cot-submit">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.21 5.08 4.5.71.31 1.26.49 1.69.63.71.23 1.35.19 1.86.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35zM12 2C6.48 2 2 6.48 2 12c0 1.77.47 3.52 1.35 5.04L2 22l5.1-1.32A9.96 9.96 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
-          Enviar cotação pelo WhatsApp
-        </button>
-
-        <p class="cot-note">
-          Depois de abrir o WhatsApp, envie também foto da peça, etiqueta ou lista de materiais.
+        <h2 id="b2b-title">Atendimento B2B para quem compra, instala e mantém sistemas de refrigeração.</h2>
+        <ul class="cot-b2b-list">
+          <li>Faturamento somente para pessoa jurídica.</li>
+          <li>Atendemos revendas, instaladores, assistências técnicas e empresas de manutenção.</li>
+          <li>Não atendemos consumidor final.</li>
+        </ul>
+        <a class="cot-whatsapp-cta" href="https://wa.me/5541996483352?text=Ol%C3%A1%2C%20Miro.%20Vim%20pela%20p%C3%A1gina%20de%20cota%C3%A7%C3%A3o%20e%20gostaria%20de%20atendimento%20B2B." target="_blank" rel="noopener" data-whatsapp-cta data-cta-location="hero-card">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><use href="#brand-whatsapp" /></svg>
+          <span>Solicitar cotação<br />pelo WhatsApp</span>
+        </a>
+        <p class="cot-b2b-card__note">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3M12 14v3"/></svg>
+          Atendimento rápido, consultivo e direto com um especialista da FrioRio.
         </p>
-      </form>
+      </aside>
     </div>
+  </section>
 
+  <section id="publicos" class="cot-audiences" aria-labelledby="audiences-title">
+    <div class="container">
+      <h2 id="audiences-title">Esta página é para quem compra para trabalhar</h2>
+      <div class="cot-audience-grid">
+        <article class="cot-audience-card">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10h18M5 10v10h14V10M4 5h16l1 5H3zM9 20v-6h6v6"/></svg>
+          <h3>Revendas</h3>
+          <p>Lojas e distribuidores que revendem para instaladores e empresas.</p>
+        </article>
+        <article class="cot-audience-card">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14.7 6.3a5 5 0 016.4 6.4L17 9l-3 3-3.7-3.7 3.7-3.7.7.7zM13 11L3 21l-1.4-1.4L11 9.6"/></svg>
+          <h3>Instaladores</h3>
+          <p>Profissionais e empresas que realizam instalações de refrigeração e ar-condicionado.</p>
+        </article>
+        <article class="cot-audience-card">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.34 1.88l.06.06-2.83 2.83-.06-.06a1.7 1.7 0 00-1.88-.34 1.7 1.7 0 00-1.03 1.56V21h-4v-.08A1.7 1.7 0 009 19.37a1.7 1.7 0 00-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 004.63 15 1.7 1.7 0 003.08 14H3v-4h.08A1.7 1.7 0 004.63 9a1.7 1.7 0 00-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 009 4.63 1.7 1.7 0 0010 3.08V3h4v.08A1.7 1.7 0 0015 4.63a1.7 1.7 0 001.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0019.37 9 1.7 1.7 0 0020.92 10H21v4h-.08A1.7 1.7 0 0019.4 15z"/></svg>
+          <h3>Assistências técnicas</h3>
+          <p>Oficinas e técnicos que precisam de peças para reparos e manutenções.</p>
+        </article>
+        <article class="cot-audience-card">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l5-3v17M10 9l5-3v15M15 10h4v11M7 10h1M7 14h1M7 18h1M12 10h1M12 14h1M12 18h1M17 13h1M17 17h1"/></svg>
+          <h3>Empresas de manutenção</h3>
+          <p>Empresas que realizam manutenção preventiva e corretiva em sistemas.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="como-cotar" class="cot-checklist" aria-labelledby="checklist-title">
+    <div class="container">
+      <div class="cot-checklist__panel">
+        <div class="cot-checklist__copy">
+          <h2 id="checklist-title">Para agilizar sua cotação, envie:</h2>
+          <ul>
+            <li>Foto da etiqueta</li>
+            <li>Referência da peça</li>
+            <li>Quantidade</li>
+            <li>Cidade/UF</li>
+            <li>Lista de materiais</li>
+          </ul>
+          <a class="cot-inline-cta" href="https://wa.me/5541996483352?text=Ol%C3%A1%2C%20Miro.%20Vim%20pela%20p%C3%A1gina%20de%20cota%C3%A7%C3%A3o%20e%20gostaria%20de%20atendimento%20B2B." target="_blank" rel="noopener" data-whatsapp-cta data-cta-location="checklist">Solicitar cotação pelo WhatsApp <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="cot-checklist__media">
+          <img src="img/cotacao-faixa-produtos.webp" alt="Tubos de cobre, válvulas, compressor e bobina de cobre" width="1774" height="887" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre-miro" class="cot-miro" aria-labelledby="miro-title">
+    <div class="container">
+      <div class="cot-miro__panel">
+        <div class="cot-miro__portrait">
+          <img src="img/mirofreitas2.jpeg" alt="Miro Freitas, representante técnico e comercial da FrioRio" width="768" height="1344" loading="lazy" />
+        </div>
+        <div class="cot-miro__content">
+          <h2 id="miro-title">Atendimento comercial B2B para peças, cobre, gases, compressores e materiais de refrigeração.</h2>
+          <p>Fale com quem entende do setor.</p>
+          <div class="cot-miro__proofs">
+            <span>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a6 6 0 0112 0v2M4 4l1.5 1.5M20 4l-1.5 1.5"/></svg>
+              Experiência de mercado
+            </span>
+            <span>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.34 1.88l-2.83 2.83A1.7 1.7 0 0015 19.37 1.7 1.7 0 0014 21h-4a1.7 1.7 0 00-1-1.63 1.7 1.7 0 00-1.88.34l-2.83-2.83A1.7 1.7 0 004.63 15 1.7 1.7 0 003 14v-4a1.7 1.7 0 001.63-1 1.7 1.7 0 00-.34-1.88l2.83-2.83A1.7 1.7 0 009 4.63 1.7 1.7 0 0010 3h4a1.7 1.7 0 001 1.63 1.7 1.7 0 001.88-.34l2.83 2.83A1.7 1.7 0 0019.37 9 1.7 1.7 0 0021 10v4a1.7 1.7 0 00-1.6 1z"/></svg>
+              Relacionamento com fabricantes
+            </span>
+            <span>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 6h12v11H3zM15 10h4l2 3v4h-6zM7 20a2 2 0 100-4 2 2 0 000 4zM18 20a2 2 0 100-4 2 2 0 000 4z"/></svg>
+              Agilidade e suporte do pedido à entrega
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="duvidas" class="cot-faq" aria-labelledby="faq-title">
+    <div class="container">
+      <h2 id="faq-title">Dúvidas frequentes</h2>
+      <div class="cot-faq__grid">
+        <article>
+          <h3>Atende pessoa física?</h3>
+          <p>Não. O faturamento é exclusivo para pessoa jurídica, com nota fiscal para CNPJ.</p>
+        </article>
+        <article>
+          <h3>Quais empresas atendem?</h3>
+          <p>Revendas, instaladores, assistências técnicas e empresas de manutenção.</p>
+        </article>
+        <article>
+          <h3>Como recebo a cotação?</h3>
+          <p>Após falar no WhatsApp, você será atendido diretamente pelo Miro.</p>
+        </article>
+        <article>
+          <h3>Vocês entregam?</h3>
+          <p>O atendimento é nacional. Consulte pelo WhatsApp os prazos e condições para sua região.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="rodape" class="lp-footer">
+  <div class="container lp-footer__grid">
+    <div class="lp-footer__brand">
+      <img src="img/logo friorio.webp" alt="FrioRio Refrigeração" width="196" height="55" loading="lazy" />
+    </div>
+    <p>Soluções em cobre e materiais para refrigeração.</p>
+    <address>
+      <a href="tel:+5541996483352">(41) 99648-3352</a>
+      <a href="mailto:miro.freitas@friorio.com.br">miro.freitas@friorio.com.br</a>
+      <span>Curitiba/PR · Atendimento nacional</span>
+    </address>
+    <div class="lp-footer__hours">
+      <strong>Atendimento comercial</strong>
+      <span>Segunda a sexta, em horário comercial</span>
+      <nav class="lp-footer__socials" aria-label="Redes sociais">
+        <a href="https://www.instagram.com/miro.friorio/" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><use href="#brand-instagram" /></svg>
+        </a>
+        <a href="https://www.facebook.com/share/1cN7uxhnVU/" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><use href="#brand-facebook" /></svg>
+        </a>
+        <a href="https://wa.me/5541996483352?text=Ol%C3%A1%2C%20Miro.%20Vim%20pela%20p%C3%A1gina%20de%20cota%C3%A7%C3%A3o%20e%20gostaria%20de%20atendimento%20B2B." target="_blank" rel="noopener" aria-label="WhatsApp" data-whatsapp-cta data-cta-location="footer">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><use href="#brand-whatsapp" /></svg>
+        </a>
+      </nav>
+    </div>
   </div>
-</section>
-
-<!-- LP FOOTER (institucional enxuto, sem CTAs concorrentes) -->
-<footer class="lp-footer">
-  <div class="container">
-    <p class="lp-footer-text">
-      © 2026 Miro Freitas — Representação técnica em refrigeração para empresas.
-    </p>
-    <div class="lp-footer-links">
+  <div class="container lp-footer__legal">
+    <span>© 2026 FrioRio Refrigeração. Todos os direitos reservados.</span>
+    <span>
       <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>
-      <span aria-hidden="true">·</span>
+      <i aria-hidden="true">|</i>
       <a href="termos.html" target="_blank" rel="noopener">Termos de Uso</a>
-    </div>
+    </span>
   </div>
 </footer>
 
 <div id="cookie" class="cookie">
-  <div style="flex: 1;">
-    Utilizamos cookies para oferecer a melhor experiência e analisar o tráfego do site. Ao continuar navegando,
-    você concorda com nossa <b>Política de Privacidade</b>.
+  <div class="cookie__text">
+    Utilizamos cookies para melhorar a experiência e analisar o tráfego. Consulte nossa <a href="privacidade.html">Política de Privacidade</a>.
   </div>
   <div class="actions">
     <button id="cookie-accept" class="btn-cookie-accept">Aceitar</button>
@@ -154,8 +243,8 @@ fbq('track', 'PageView');
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="js/vendor/lenis-1.3.25.min.js"></script>
 <script src="js/app.js"></script>
-<script src="js/cotacao.js"></script>
+<script src="js/cotacao.js?v=4"></script>
 </body>
 </html>
